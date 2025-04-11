@@ -41,10 +41,22 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
     'users',
-    'posts',
+    # 'posts',
     'core',
     # 'channels',
 ]
+
+
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

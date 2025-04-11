@@ -52,12 +52,11 @@ class UserLogoutView(APIView):
 
 
 class UserListView(ListAPIView):
-    queryset = User.objects.filter(is_active=True)  # Only show active users
+    queryset = User.objects.filter(is_active=True) 
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Add search functionality (optional)
         queryset = super().get_queryset()
         search_query = self.request.query_params.get('search', None)
         if search_query:
@@ -66,7 +65,7 @@ class UserListView(ListAPIView):
 
 
 class UserProfileView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, user_id):
         try:
@@ -115,7 +114,6 @@ class FollowUserView(APIView):
 
 class UnfollowUserView(APIView):
     permission_classes = [IsAuthenticated]
-
     def post(self, request, user_id):
         try:
             user_to_unfollow = User.objects.get(id=user_id)

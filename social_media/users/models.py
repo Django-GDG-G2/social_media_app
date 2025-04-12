@@ -7,7 +7,7 @@ class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     bio = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
-    
+
     date_joined = models.DateTimeField(auto_now_add=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True,
                                         default='profile_pics/default.jpg')
@@ -17,6 +17,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+    
 
 
 class Follow(models.Model):

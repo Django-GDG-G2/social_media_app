@@ -72,6 +72,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return obj.following.count()
 
 
+
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow

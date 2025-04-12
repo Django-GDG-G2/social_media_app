@@ -46,6 +46,7 @@ def registerUser(request):
     if User.objects.filter(email=data['email']).exists():
         return Response({"details": "Email already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
+
     try:
      
         user = User.objects.create(

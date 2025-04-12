@@ -28,8 +28,8 @@ urlpatterns = [
     path('users/<int:user_id>/', UserProfileView.as_view(), name='user-profile'),
     path('users/<int:user_id>/follow/', FollowUserView.as_view(), name='follow-user'),
     path('users/<int:user_id>/unfollow/', UnfollowUserView.as_view(), name='unfollow-user'),
-    
-    #auth path
+
+    #auth paths
     path('users/register/',registerUser,name='register'),
     path('acitvate/<uidb64>/<token>', ActivateAccountView.as_view(),name='activate'),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

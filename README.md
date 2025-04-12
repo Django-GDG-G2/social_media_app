@@ -127,13 +127,26 @@ Now, your app should be running at `http://127.0.0.1:8000/`.
 🖥️ TemplateView Accessibility
 The TemplateViews provide a user-friendly HTML interface for interacting with the app directly in a web browser. These pages are accessible without needing external tools like Postman. For example:
 
-Go to /register/ to sign up
 
-Visit /login/ to log in
+## 🌐 Web (Template) Views
 
-Browse /posts/ to view all posts
+These routes serve HTML pages for browser users:
 
-Access /users/ to explore user profiles
+### 🔐 Auth Pages
+- `GET /register/` – Register via form
+- `GET /login/` – Log in via form
+- `GET /logout/` – Log out
+
+### 👤 User Pages
+- `GET /users/` – List all users (HTML)
+- `GET /users/<id>/` – View individual user profiles
+
+### 📝 Post Pages
+- `/` – Post list (homepage)
+- `/posts/create/` – Create new post
+- `/posts/<id>/` – View post details
+- `/posts/<id>/update/` – Update a post
+- `/posts/<id>/delete/` – Delete a post
 
 In addition to the RESTful API, the app includes basic TemplateViews that serve HTML pages. These templates are a work-in-progress and are currently designed to mock a simplified version of Instagram (inspired by "DjangoGram").
 

@@ -12,22 +12,14 @@ from .serializers import (
 )
 from django.shortcuts import get_object_or_404
 from .models import Follow, User
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 
 User = get_user_model()
 
 
-class UserRegistrationView(APIView):
-    def post(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                'message': 'User registered successfully',
-                'access_token': str(refresh.access_token),
-                'refresh_token': str(refresh)
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class UserLoginView(APIView):
@@ -88,6 +80,7 @@ class UserProfileView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class FollowUserView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -128,3 +121,18 @@ class UnfollowUserView(APIView):
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
+
+
+
+# class UserRegistrationView(APIView):
+#     def post(self, request):
+#         serializer = UserRegistrationSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user = serializer.save()
+#             refresh = RefreshToken.for_user(user)
+#             return Response({
+#                 'message': 'User registered successfully',
+#                 'access_token': str(refresh.access_token),
+#                 'refresh_token': str(refresh)
+#             }, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

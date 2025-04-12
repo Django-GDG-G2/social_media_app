@@ -9,7 +9,44 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 # User = get_user_model()
 
+class UserSerializer(serializers.ModelSerializer):
+    name=serializers.SerializerMethodField(read_only=True)
+    _id=serializers.SerializerMethodField(read_only=True)
+    isAdmin=serializers.SerializerMethodField(read_only=True)
+   
+    class Meta:
+        model=User
+        
+        fields = ['id','email', 'username', 'password', 'bio','isAdmin']
+    
+    def get_name(self,obj):
+        firstname=obj.first_name
+        lastname=obj.last_name
+        name=firstname+' '+lastname
+        if name=='':
+            name=obj.email[:5]
+            return name
+        return name
+    
+    def get__id(self,obj):
+        return obj.id
 
+    def get_isAdmin(self,obj):
+        return obj.is_staff
+
+    
+class UserSerializerWithToken(UserSerializer):
+    token=serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model=User
+        fields = ['id','_id','email', 'username', 'password', 'bio','isAdmin','token']
+    
+    def get_token(self,obj):
+        token=RefreshToken.for_user(obj)
+        return str(token.access_token)   
+
+
+    
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     _id=serializers.SerializerMethodField(read_only=True)

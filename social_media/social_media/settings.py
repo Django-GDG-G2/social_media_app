@@ -165,12 +165,16 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+AUTHENTICATION_BACKENDS = (
+    'users.email_backend.EmailBackend',  
+    'django.contrib.auth.backends.ModelBackend',  
+)
 
-
-EMAIL_FROM_USER=os.environ.get('EMAIL_FROM_USER')
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = os.environ.get('EMAIL_FROM_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailtrap.io'  
+EMAIL_PORT = 2525 
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = ''  
+EMAIL_HOST_PASSWORD = '' 
+DEFAULT_FROM_EMAIL = 'hello@example.com'  
+

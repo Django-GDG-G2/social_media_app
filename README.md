@@ -124,6 +124,36 @@ Now, your app should be running at `http://127.0.0.1:8000/`.
 - **POST** `/api/users/{user_id}/unfollow`: Unfollow a user
 
 ---
+🖥️ TemplateView Accessibility
+The TemplateViews provide a user-friendly HTML interface for interacting with the app directly in a web browser. These pages are accessible without needing external tools like Postman. For example:
+
+Go to /register/ to sign up
+
+Visit /login/ to log in
+
+Browse /posts/ to view all posts
+
+Access /users/ to explore user profiles
+
+In addition to the RESTful API, the app includes basic TemplateViews that serve HTML pages. These templates are a work-in-progress and are currently designed to mock a simplified version of Instagram (inspired by "DjangoGram").
+
+They provide a visual way to:
+
+Register and log in
+
+View and create posts
+
+Browse users and profiles
+
+Follow/unfollow users
+
+Like and comment on posts
+
+🔧 Planned Improvements:
+
+The current templates are placeholders and will be revamped with improved UI/UX.
+
+Features like real-time likes and comments, and enhanced interactivity will be re-implemented with better front-end logic (potentially using JavaScript or React).
 
 ## Data Models
 

@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+import django
+import os
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,6 +30,7 @@ SECRET_KEY = 'django-insecure-ncw^4clqjj+&d9^9a!8m!mj&o&8a2toy6395f!k(8y0w5nfag^
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 
@@ -61,7 +66,9 @@ ROOT_URLCONF = 'social_media.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
+
+        'DIRS': ["templates"],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,3 +150,24 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=40),  #just to suspend token expire time
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+AUTHENTICATION_BACKENDS = (
+    'users.email_backend.EmailBackend',  
+    'django.contrib.auth.backends.ModelBackend',  
+)
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailtrap.io'  
+EMAIL_PORT = 2525 
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = ''  
+EMAIL_HOST_PASSWORD = '' 
+DEFAULT_FROM_EMAIL = 'hello@example.com'  
+

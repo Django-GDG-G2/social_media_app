@@ -1,9 +1,11 @@
 from django.db import models
+
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
+
     email = models.EmailField(_('email address'), unique=True)
     bio = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
@@ -16,6 +18,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+    
 
 
 class Follow(models.Model):

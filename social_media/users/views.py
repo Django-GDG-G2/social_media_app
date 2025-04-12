@@ -11,7 +11,12 @@ from .serializers import (
     UserProfileSerializer,
     FollowSerializer
 )
-from .models import Follow
+
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
+
+from django.shortcuts import get_object_or_404
+from .models import Follow, User
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
@@ -19,21 +24,11 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
+
 User = get_user_model()
 
 
-class UserRegistrationView(APIView):
-    def post(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                'message': 'User registered successfully',
-                'access_token': str(refresh.access_token),
-                'refresh_token': str(refresh)
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class UserLoginView(APIView):
@@ -95,6 +90,7 @@ class UserProfileView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class FollowUserView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -137,6 +133,21 @@ class UnfollowUserView(APIView):
 
 
 
+
+
+
+class UserRegistrationView(APIView):
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'message': 'User registered successfully',
+                'access_token': str(refresh.access_token),
+                'refresh_token': str(refresh)
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #views for tempolate
 class UserRegistrationTemplateView(View):
@@ -195,3 +206,4 @@ class UserListTemplateView(LoginRequiredMixin, ListView):
         if search_query:
             return queryset.filter(username__icontains=search_query)
         return queryset.exclude(id=self.request.user.id)
+

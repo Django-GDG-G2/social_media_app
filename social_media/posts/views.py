@@ -9,6 +9,11 @@ from .serializers import PostSerializer, CommentSerializer, LikeSerializer
 from users.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
 
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+
 
 class PostCreateView(CreateAPIView):
     queryset = Post.objects.all()
@@ -138,3 +143,66 @@ class CommentListView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Post.DoesNotExist:
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+# class based post template views
+class PostListTemplateView(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'posts/post_list.html'
+    context_object_name = 'posts'
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liked_posts'] = self.request.user.likes.values_list('post_id', flat=True)
+        return context
+
+
+class PostDetailTemplateView(LoginRequiredMixin, DetailView):
+    model = Post
+    template_name = 'posts/post_detail.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.comments.all().order_by('-created_at')
+        context['is_liked'] = self.object.likes.filter(user=self.request.user).exists()
+        return context
+
+
+class PostCreateTemplateView(LoginRequiredMixin, CreateView):
+    model = Post
+    template_name = 'posts/post_form.html'
+    fields = ['content', 'image']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        messages.success(self.request, 'Post created successfully!')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.object.pk})
+
+
+class PostUpdateTemplateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'posts/post_form.html'
+    fields = ['content', 'image']
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Post updated successfully!')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.object.pk})
+
+
+class PostDeleteTemplateView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'posts/post_confirm_delete.html'
+    success_url = reverse_lazy('post-list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Post deleted successfully!')
+        return super().delete(request, *args, **kwargs)

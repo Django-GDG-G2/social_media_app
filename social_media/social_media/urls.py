@@ -1,9 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponse
 from rest_framework_simplejwt.views import TokenRefreshView
 from users.views import UserLoginView
 from django.conf import settings
 from django.conf.urls.static import static
+
+def home_view(request):
+    return HttpResponse("<h1> Our Social Media API works :) </h1>")
 
 
 ...
@@ -27,6 +31,7 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+    path('', home_view, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

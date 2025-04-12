@@ -23,4 +23,8 @@ db.sqlite3
 *.env
 venv/
 ENV/
+<<<<<<< HEAD
 env/
+=======
+env/
+>>>>>>> cc38e0a9bf24986af5fc563062efb7df82e65232

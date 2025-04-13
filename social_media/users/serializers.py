@@ -53,7 +53,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     isAdmin=serializers.BooleanField(read_only=True) 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'bio','isAdmin')
+        fields = ('_id','email', 'username', 'password', 'bio','isAdmin')
 
     def create(self, validated_data):
 
@@ -93,7 +93,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField()
     following_count = serializers.SerializerMethodField()
     profile_picture = serializers.ImageField(max_length=None, use_url=True)
-    isAdmin = serializers.BooleanField(source='isAdmin')
+    # isAdmin = serializers.BooleanField()
     class Meta:
         model = User
         fields = (

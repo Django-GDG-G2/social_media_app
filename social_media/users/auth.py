@@ -141,7 +141,7 @@ def registerUser(request):
         email_message = EmailMessage(email_subject, message, settings.EMAIL_HOST_USER, [data['email']])
         email_message.send()
 
-        return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'User registered successfully.Please Verify your Email, Email Verification is sent.'}, status=status.HTTP_201_CREATED)
 
     except KeyError as e:
         return Response(

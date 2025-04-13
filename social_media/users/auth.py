@@ -43,7 +43,7 @@ User = get_user_model()
 @csrf_exempt
 @api_view(['GET'])
 def getRoutes(request):
-    return Response('Hello Anees')
+    return Response('Hello GDG')
 
 
 
@@ -108,13 +108,11 @@ def getUsers(request):
     users=User.objects.all()
     serializer=UserSerializer(users,many=True)
     return Response(serializer.data)
-
 @csrf_exempt
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
     try:
-        
         if User.objects.filter(email=data['email']).exists():
             return Response(
                 {'error': 'Email address already registered.'},
@@ -129,7 +127,6 @@ def registerUser(request):
             is_active=False
         )
 
-        
         email_subject = "Activate Your Account"
         message = render_to_string(
             "activate.html",
@@ -144,8 +141,7 @@ def registerUser(request):
         email_message = EmailMessage(email_subject, message, settings.EMAIL_HOST_USER, [data['email']])
         email_message.send()
 
-        serialize = UserSerializerWithToken(user, many=False)
-        return Response(serialize.data)
+        return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
 
     except KeyError as e:
         return Response(
@@ -157,7 +153,6 @@ def registerUser(request):
             {'error': str(e)},
             status=status.HTTP_400_BAD_REQUEST
         )
-
 
 @csrf_exempt
 def activate_account_view(request, uidb64, token):

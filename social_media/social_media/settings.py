@@ -169,5 +169,5 @@ EMAIL_PORT = 2525
 EMAIL_USE_TLS = True  
 EMAIL_HOST_USER = ''  
 EMAIL_HOST_PASSWORD = '' 
-DEFAULT_FROM_EMAIL = 'hello@example.com'  
+DEFAULT_FROM_EMAIL = 'hello@example.com' 
 
